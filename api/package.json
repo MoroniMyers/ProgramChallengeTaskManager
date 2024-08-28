@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.ts",
-    "sql:challenge": "nodemon src/database/runSqlChallenge.ts",
-    "sql": "nodemon src/database/runSqlChallengeScratch.ts",
+    "sql:challenge": "nodemon --ext ts,sql  --exec \"node -r @swc-node/register src/database/runSqlChallenge.ts challenge\"",
+    "sql": "nodemon --ext ts,sql --exec \"node -r @swc-node/register src/database/runSqlChallenge.ts\"",
     "migrate:make": "knex migrate:make --knexfile ./knexfile.js",
     "migrate:latest": "knex migrate:latest ./knexfile.js",
     "migrate:rollback": "knex migrate:rollback ./knexfile.js",
@@ -28,6 +28,7 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
+    "@swc-node/register": "^1.10.9",
     "@types/node": "^20.11.17"
   }
 }
