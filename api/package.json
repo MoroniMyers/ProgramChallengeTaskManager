@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.ts",
-    "sql:challenge": "nodemon --ext ts,sql  --exec \"node -r @swc-node/register src/database/runSqlChallenge.ts challenge\"",
+    "sql:challenge": "ts-node src/database/runSqlChallenge.ts challenge",
     "sql": "nodemon --ext ts,sql --exec \"node -r @swc-node/register src/database/runSqlChallenge.ts\"",
     "migrate:make": "knex migrate:make --knexfile ./knexfile.js",
     "migrate:latest": "knex migrate:latest ./knexfile.js",

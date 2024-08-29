@@ -4,7 +4,7 @@
  */
 exports.seed = async function(knex) {
     // Deletes ALL existing entries
-    await knex('attendance').del()
+    await knex('attendance').truncate()
 
     const attendance = [
         {
