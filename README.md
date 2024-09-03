@@ -1,6 +1,6 @@
 # General
 
-Estimated time to complete: 2-3 Hours (for your own sake, please don't exceed five hours.)
+Estimated time to complete: 4-5 Hours (for your own sake, please don't exceed five hours.)
 
 # Getting Started
 
