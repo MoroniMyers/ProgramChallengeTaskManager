@@ -4,7 +4,7 @@
  */
 exports.seed = async function(knex) {
   // Deletes ALL existing entries
-  await knex('tasks').del()
+  await knex('tasks').truncate()
 
   const tasks = [
     'Create the front-end component',

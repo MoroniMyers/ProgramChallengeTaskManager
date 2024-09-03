@@ -1,8 +1,6 @@
 # General
 
-Deadline: Monday, February 19, 2024
-
-Estimated time to complete: 1-2 Hours (for your own sake, please don't exceed two hours.)
+Estimated time to complete: 2-3 Hours (for your own sake, please don't exceed five hours.)
 
 # Getting Started
 
@@ -107,3 +105,81 @@ Your submission will be judged out of 10 points based on the following criteria:
 - Are there any obvious bugs?
 - Are there any obvious performance issues?
 - Are there comments where necessary?
+
+
+### Mission three: Analyze student attendance.
+
+Complete this mission in:
+- `./api/src/database/scripts/sql_challenge.sql`
+
+Write a postgres SQL query to complete the following analysis:
+
+```
+Table: attendance
++-------------------+---------+
+| Column Name       | Type    |
++-------------------+---------+
+| id                | int     |
+| attendance_date   | date    |
+| periods_missed    | int     |
++-------------------+---------+
+Each row of this table contains the attendance date and id to the 
+date with the number of periods missed.
+
+
+Write a solution to display the records with three or more rows with 
+consecutive id's, and the number of periods missed is greater than or equal 
+to 500 for each.
+
+Return the result table ordered by attendance date in ascending order.
+
+The result format is in the following example.
+Example 1:
+
+Input:
+Attendance table:
++------+-----------------+-------------------+
+| id   | attendance_date | periods_missed    |
++------+-----------------+-------------------+
+| 1    | 2017-01-01      | 456               |
+| 2    | 2017-01-02      | 585               |
+| 3    | 2017-01-03      | 664               |
+| 4    | 2017-01-04      | 215               |
+| 5    | 2017-01-05      | 549               |
+| 6    | 2017-01-06      | 599               |
+| 7    | 2017-01-07      | 641               |
+| 8    | 2017-01-09      | 596               |
++------+-----------------+-------------------+
+Output:
++------+-----------------+-------------------+
+| id   | attendance_date | periods_missed    |
++------+-----------------+-------------------+
+| 5    | 2017-01-05      | 549               |
+| 6    | 2017-01-06      | 599               |
+| 7    | 2017-01-07      | 641               |
+| 8    | 2017-01-09      | 596               |
++------+-----------------+-------------------+
+Explanation:
+The four rows with ids 5, 6, 7, and 8 have consecutive ids and each of them 
+has >= 500 periods missed. Note that row 8 was included even though the 
+attendance_date was not the next day after row 7.
+
+The rows with ids 2 and 3 are not included because we need at least three consecutive ids.
+```
+
+**To test your query, use `npm run sql`**
+
+**To run the challenge, use `npm run sql:challenge`**
+
+**Definition of done:**
+- [ ] the query returns the id, attendance_date, and periods_missed
+- [ ] the output is identical to desired output
+
+Your submission will be judged out of 10 points based on the following criteria:
+
+**Works as expected - 5 points**
+- Ship, ship, ship!
+
+**Code quality - 5 points**
+- Is the code clean and easy to read?
+- Were the requirements fulfilled and efficient?
