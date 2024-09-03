@@ -111,7 +111,6 @@ Your submission will be judged out of 10 points based on the following criteria:
 
 Complete this mission in:
 - `./api/src/database/scripts/sql_challenge.sql`
-- `./api/src/database/scripts/sql_challenge_scratch.sql` (testing scratch pad that prints the query results as JSON. Use this for your development.)
 
 Write a postgres SQL query to complete the following analysis:
 
@@ -170,7 +169,7 @@ The rows with ids 2 and 3 are not included because we need at least three consec
 
 **To test your query, use `npm run sql`**
 
-**To run the challenge, copy your query to the challenge file, use `npm run sql:challenge`**
+**To run the challenge, use `npm run sql:challenge`**
 
 **Definition of done:**
 - [ ] the query returns the id, attendance_date, and periods_missed
