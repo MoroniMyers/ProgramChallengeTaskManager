@@ -18,6 +18,10 @@ export const useSubmitTask = () => {
    * the following criteria:
    * 
    * - Works as expected - 5 points
+   *   - Does the function send a post request to the server?
+   *   - Are errors handled correctly?
+   *   - Is the response from the server correctly placed into the tasks list?
+   *   - Can I submit several tasks in a row without issues?
    * - Code quality - 5 points
    *   - Is the code clean and easy to read?
    *   - Are there any obvious bugs?
