@@ -17,7 +17,7 @@
         - Does the component look like the design? (e.g. padding, margin -- see /random/mission-one.gif) - 2 points
         - Is there good interaction feedback? (e.g. hover, focus, active states) - 3 points
       Code quality - 5 points
-        - Are concerns clearly separeted? (e.g. clear responsibilities for functions, etc.) - 3 point
+        - Are concerns clearly separated? (e.g. clear responsibilities for functions, etc.) - 3 point
         - Is the code easy to read and understand? - 2 points
     -->
   </div>
