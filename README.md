@@ -18,12 +18,12 @@ You need to have the following installed:
 In order to limit the number of dependencies in this project, our implementation requires you to run three processes in parallel.
 
 **Turning on the database:**
-1. From the root of this project, run:
+1. From the root of this project, run the command below. Please note that this will turn on a postgres database on port :5432. If you already have a postgres database running on :5432, turn it off in order to use this docker image. Alternatively, you can use your own Postgres database if you don't mind tables being generated in the `postgres` db within your Postgres instance. Environment variables such as database name can be changed in `./api/.env`
 ```
 docker compose up
 ```
 2. Navigate to the `./api` directory and run `npm run migrate:latest`. This will create a `tasks` table.
-3. From the `./api` directory, run `npm run seed:run`. This will create three tasks in your table.
+3. From the `./api` directory, run `npm run seed:run`. This will create three tasks in your table, and will initialize the records needed for the SQL Challenge in Mission Three.
 
 **Running the API**
 1. Navigate to the `./api` directory.
@@ -40,11 +40,11 @@ If you find an error in this documentation, please promptly reach out to me at t
 
 # Your Mission
 
-Your mission, should you choose to accept it, comes in two parts. They are both documented below. Before I dive into the details, you should know a few things:
+Your mission, should you choose to accept it, comes in three parts. They are each documented below. Before I dive into the details, you should know a few things:
 
-1. Don't spend more than two hours on this. We hope that you can accomplish both of these tasks within an hour or so.
-2. If you think that this is way more work than one hour, please let me know. This is Parsec's first time with this type of challenge. Your feedback would be greatly appreciated.
-3. You can and _should_ use every tool at your disposable--i.e. google things, use ChatGPT, StackOverflow, whatever you want. Go crazy.
+1. Don't spend more than an hour or two on each mission. We hope that you can accomplish these tasks within a total of about four or five hours.
+2. If you think that this is way more work than four or five hours, just accomplish whatever you can and focus on quality of implementation instead of quantity.
+3. You are permitted and _encouraged_ to use every tool at your disposable--i.e. google things, AI coding assistants, StackOverflow, whatever you want. Go crazy. The aim of this project is to be a close-to-real-world test of your programming ability.
 4. Colors and font sizes are all in `./client/src/assets/base.scss`. Use `--color-accent-one` for blue, and `--color-text` for grey/black.
 
 Specific judgement criteria are specified below. In addition to this, your overall implementatio decisions will be judged out of ten points:
@@ -64,7 +64,7 @@ Complete this mission in:
 
 Design:
 
-![Gif that should load.](https://gitlab.com/tim386/programming-challenge/-/raw/main/random/mission-one.gif?ref_type=heads&inline=false)
+![An animated gif displaying the desired input behavior](https://gitlab.com/tim386/programming-challenge/-/raw/main/random/mission-one.gif?ref_type=heads&inline=false)
 
 **Definition of done:**
 - [ ] User can type into the input
@@ -74,8 +74,8 @@ Design:
 Your submission will be judged out of ten points based on the following criteria:
 
 **Design fidelity - 5 points total**
-- Is the spacing correct? (e.g. padding, margin) - 2 points
-- Is there good interaction feedback? (e.g. hover, focus, active states--look at the design) - 3 points
+- Does the component look like the design? (e.g. padding, margin -- see /random/mission-one.gif) - 2 points
+- Is there good interaction feedback? (e.g. hover, focus, active states) - 3 points
 
 **Code quality - 5 points**
 - Are concerns clearly separated? (e.g. clear responsibilities for functions, etc.) - 3 point
@@ -88,23 +88,40 @@ Complete this mission in:
 - `./client/src/composables/useSubmitTask.ts` (see `./client/src/composables/useGetTasks.ts` for inspiration/example of how this approach works)
 - `./api/src/index.ts`
 
-Write and return a function here which will submit a JSON object to the server to be inserted into the database. Make sure that the response from the server is then placed into the tasks list.
+After you've completed Mission One which handles the display of the task submission interface, you will need to make the interface functional. That will require you to create an endpoint in the API (`./api/src/index.ts`) and the front-end submission functionality to send data to the endpoint from the front end (`./client/src/composables/useSubmitTask.ts`).
 
 **Definition of done:**
-- [ ] the function sends a post request to the server
-- [ ] the server inserts the task into the database
-- [ ] the newly inserted task is placed into the tasks list
+- [ ] The function sends a post request to the server.
+- [ ] The state of the request is somehow indicated to the user.
+- [ ] Errors are handled properly.
+- [ ] The server inserts the task into the database.
+- [ ] The newly inserted task is placed into the tasks list in the client.
 
-Your submission will be judged out of 10 points based on the following criteria:
+Your submission will be judged out of 20 points based on the following criteria:
 
-**Works as expected - 5 points**
-- Ship, ship, ship!
+**Front-end Submission Functionality - 10 points**
+- **Works as expected - 5 points**
+  - Does the function send a post request to the server?
+  - Is the state of the request properly tracked (loading, error, etc)?
+  - Are errors handled correctly?
+  - Is the response from the server correctly placed into the tasks list?
+  - Can I submit several tasks in a row without issues?
+- **Code quality - 5 points**
+  - Is the code clean and easy to read?
+  - Are there any obvious bugs?
+  - Are there any obvious performance issues?
+  - Are there comments where necessary?
 
-**Code quality - 5 points**
-- Is the code clean and easy to read?
-- Are there any obvious bugs?
-- Are there any obvious performance issues?
-- Are there comments where necessary?
+**API Endpoint - 10 points**
+- **Works as expected - 5 points**
+  - Is the task actually inserted into the database?
+  - Is the inserted task returned in the response for display in the UI?
+  - Are errors handled correctly?
+- **Code quality - 5 points**
+  - Is the code clean and easy to read?
+  - Are there any obvious performance issues?
+  - Are there any obvious bugs?
+  - Are there comments where necessary?
 
 
 ### Mission three: Analyze student attendance.
@@ -123,6 +140,7 @@ Table: attendance
 | attendance_date   | date    |
 | periods_missed    | int     |
 +-------------------+---------+
+
 Each row of this table contains the attendance date and id to the 
 date with the number of periods missed.
 
@@ -150,6 +168,7 @@ Attendance table:
 | 7    | 2017-01-07      | 641               |
 | 8    | 2017-01-09      | 596               |
 +------+-----------------+-------------------+
+
 Output:
 +------+-----------------+-------------------+
 | id   | attendance_date | periods_missed    |
@@ -159,6 +178,7 @@ Output:
 | 7    | 2017-01-07      | 641               |
 | 8    | 2017-01-09      | 596               |
 +------+-----------------+-------------------+
+
 Explanation:
 The four rows with ids 5, 6, 7, and 8 have consecutive ids and each of them 
 has >= 500 periods missed. Note that row 8 was included even though the 
@@ -167,7 +187,7 @@ attendance_date was not the next day after row 7.
 The rows with ids 2 and 3 are not included because we need at least three consecutive ids.
 ```
 
-**To test your query, use `npm run sql`**
+**To test your query, navigate to `/api` and use `npm run sql`**
 
 **To run the challenge, use `npm run sql:challenge`**
 
@@ -178,7 +198,7 @@ The rows with ids 2 and 3 are not included because we need at least three consec
 Your submission will be judged out of 10 points based on the following criteria:
 
 **Works as expected - 5 points**
-- Ship, ship, ship!
+- The output of the query is identical to the desired result
 
 **Code quality - 5 points**
 - Is the code clean and easy to read?

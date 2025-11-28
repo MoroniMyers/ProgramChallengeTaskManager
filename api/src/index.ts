@@ -47,12 +47,16 @@ const init = async () => {
        * Your submission will be judged out of 10 points based on
        * the following criteria:
        * 
-       * - Works as expected - 5 points
-       * - Code quality - 5 points
-       *   - Is the code clean and easy to read?
-       *   - Are there any obvious bugs?
-       *   - Are there any obvious performance issues?
-       *   - Are there comments where necessary?
+       * Works as expected - 5 points**
+       * - Is the task actually inserted into the database?
+       * - Is the inserted task returned in the response for display in the UI?
+       * - Are errors handled correctly?
+       * 
+       * Code quality - 5 points**
+       * - Is the code clean and easy to read?
+       * - Are there any obvious performance issues?
+       * - Are there any obvious bugs?
+       * - Are there comments where necessary?
        */
     } 
   });
