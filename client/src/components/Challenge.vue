@@ -13,9 +13,7 @@
           :key="task.tasksId"
           :task="task"
         />
-
-        <!-- Mission one is inside the task input! -->
-        <TaskInput />
+        <TaskInput @submit="handleAddTask" />
       </div>
     </div>
   </div>
@@ -29,6 +27,10 @@ import TaskInput from './TaskInput.vue';
 import { useGetTasks } from '../composables/useGetTasks';
 
 const { tasks, state } = useGetTasks();
+
+const handleAddTask = (taskToAdd: string) => {
+  console.log('New task from TaskInput:', taskToAdd)
+}
 </script>
 
 <style lang="scss">
