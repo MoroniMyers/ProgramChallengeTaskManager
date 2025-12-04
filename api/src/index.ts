@@ -32,32 +32,33 @@ const init = async () => {
 
   server.route({
     method: 'POST',
-    path: '/mission-two', // Bonus points if you give it a sensical name ;)
+    path: '/tasks', 
     handler: async (r, h) => {
-      /**
-       * Mission Two: Insert a task into the database.
-       * 
-       * Receive a post request from the front end
-       * and insert it into the database.details, too
-       * 
-       * Definition of done:
-       * [ ] the record is inserted into the database
-       * [ ] a success response is returned
-       * 
-       * Your submission will be judged out of 10 points based on
-       * the following criteria:
-       * 
-       * Works as expected - 5 points**
-       * - Is the task actually inserted into the database?
-       * - Is the inserted task returned in the response for display in the UI?
-       * - Are errors handled correctly?
-       * 
-       * Code quality - 5 points**
-       * - Is the code clean and easy to read?
-       * - Are there any obvious performance issues?
-       * - Are there any obvious bugs?
-       * - Are there comments where necessary?
-       */
+      try {
+        const { taskContent  } = r.payload as { taskContent ?: string };
+
+        // Basic validation
+        if (!taskContent || !taskContent.trim()) {
+          return h
+            .response({ error: 'Task content is required.' })
+            .code(400);
+        }
+
+        // Insert into DB and return the inserted row
+        const result = await db.raw(
+          'insert into tasks (content) values (?) returning *',
+          [taskContent.trim()]
+        );
+
+        const insertedTask = result.rows[0];
+
+        return h.response(insertedTask).code(201);
+      } catch (error) {
+        console.error(error);
+        return h
+          .response({ error: 'Failed to create task.' })
+          .code(500);
+      }
     } 
   });
 
