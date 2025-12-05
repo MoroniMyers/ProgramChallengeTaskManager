@@ -1,6 +1,7 @@
 import api from '../utils/axios';
 import { ref, type Ref } from 'vue';
 import type { Task } from '../utils/types';
+import type { AxiosError } from 'axios';
 
 type SubmitState = 'idle' | 'submitting' | 'error';
 
@@ -44,7 +45,12 @@ export const useSubmitTask = (tasks: Ref<Task[]>) => {
     } catch (error) {
       console.error(error);
       submitState.value = 'error';
-      submitError.value = 'Failed to submit task. Please try again.';
+
+      const axiosError = error as AxiosError<{ error?: string }>;
+      const apiErrorMessage = axiosError.response?.data?.error;
+
+      submitError.value =
+        apiErrorMessage ?? 'Failed to submit task. Please try again.';
     }
   };
 
