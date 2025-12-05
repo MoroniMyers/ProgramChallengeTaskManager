@@ -13,23 +13,41 @@
           :key="task.tasksId"
           :task="task"
         />
-        <TaskInput @submit="handleAddTask" />
+        <TaskInput 
+        @submit="handleAddTask" 
+        :is-submitting="isSubmitting"
+        />
+
+         <!-- Simple submission status / error feedback -->
+        <p v-if="submissionStatus === 'submitting'" class="status status--info">
+          Submitting task...
+        </p>
+        <p v-else-if="submissionStatus === 'error'" class="status status--error">
+          {{ submissionErrorMessage }}
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+
+/* components */
 import TaskDisplay from './TaskDisplay.vue';
 import TaskInput from './TaskInput.vue';
 
 /* composables */
 import { useGetTasks } from '../composables/useGetTasks';
+import { useSubmitTask } from '../composables/useSubmitTask';
 
 const { tasks, state } = useGetTasks();
+const { submitTask, submitState, submitError } = useSubmitTask(tasks);
+
+const isSubmitting = computed(() => submitState.value === 'submitting');
 
 const handleAddTask = (taskToAdd: string) => {
-  console.log('New task from TaskInput:', taskToAdd)
+  submitTask(taskToAdd);
 }
 </script>
 
@@ -56,6 +74,20 @@ const handleAddTask = (taskToAdd: string) => {
       display: flex;
       flex-direction: column;
       gap: var(--space-2);
+    }
+
+    /*styles for status messages */
+    .status {
+      padding: 0 var(--space-3);
+      font-size: var(--fs-1);
+
+      &.status--info {
+        color: var(--color-text-inactive);
+      }
+
+      &.status--error {
+        color: var(--color-error);
+      }
     }
   }
 }

@@ -11,15 +11,20 @@
     <button
       type="submit"
       class="task-input__button"
-      :disabled="isDisabled"
+      :disabled="isButtonDisabled"
     >
-      ADD
+      <span v-if="isSubmitting">Adding...</span>
+      <span v-else>ADD</span>
     </button>
   </form>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+
+const props = defineProps<{
+  isSubmitting?: boolean;
+}>();
 
 /**
  * Emits:
@@ -32,7 +37,12 @@ const emit = defineEmits<{
 
 const newTask = ref('')
 
-const isDisabled = computed(() => !newTask.value.trim())
+const isInputEmpty = computed(() => !newTask.value.trim());
+const isSubmitting = computed(() => props.isSubmitting === true);
+const isButtonDisabled = computed(
+  () => isInputEmpty.value || isSubmitting.value
+);
+
 
 const onSubmit = () => {
   const trimmed = newTask.value.trim()
