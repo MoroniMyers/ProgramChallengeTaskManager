@@ -19,11 +19,11 @@
         />
 
          <!-- Simple submission status / error feedback -->
-        <p v-if="submissionStatus === 'submitting'" class="status status--info">
+        <p v-if="submitState === 'submitting'" class="status status--info">
           Submitting task...
         </p>
-        <p v-else-if="submissionStatus === 'error'" class="status status--error">
-          {{ submissionErrorMessage }}
+        <p v-else-if="submitState === 'error'" class="status status--error">
+          {{ submitError }}
         </p>
       </div>
     </div>
