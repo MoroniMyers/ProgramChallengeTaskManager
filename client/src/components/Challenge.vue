@@ -22,8 +22,11 @@
         <p v-if="submitState === 'submitting'" class="status status--info">
           Submitting task...
         </p>
-        <p v-else-if="submitState === 'error'" class="status status--error">
+        <p v-if="submitState === 'error'" class="status status--error">
           {{ submitError }}
+        </p>
+        <p v-if="submitState === 'success'" class="status status--success">
+          Task added successfully!
         </p>
       </div>
     </div>
@@ -87,6 +90,10 @@ const handleAddTask = (taskToAdd: string) => {
 
       &.status--error {
         color: var(--color-error);
+      }
+      
+      &.status--success {
+        color: var(--color-success);
       }
     }
   }

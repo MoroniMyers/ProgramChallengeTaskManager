@@ -3,7 +3,7 @@ import { ref, type Ref } from 'vue';
 import type { Task } from '../utils/types';
 import type { AxiosError } from 'axios';
 
-type SubmitState = 'idle' | 'submitting' | 'error';
+type SubmitState = 'idle' | 'submitting' | 'error'| 'success';
 
 /**
  * Composable for creating a new task.
@@ -41,7 +41,14 @@ export const useSubmitTask = (tasks: Ref<Task[]>) => {
       // Append the new task to the existing list
       tasks.value = [...tasks.value, createdTask ];
 
-      submitState.value = 'idle';
+      // Mark success before resetting to idle
+      submitState.value = 'success';
+
+      //auto reset back to idle after a moment
+      setTimeout(() => {
+        submitState.value = 'idle';
+      }, 1500);
+
     } catch (error) {
       console.error(error);
       submitState.value = 'error';
