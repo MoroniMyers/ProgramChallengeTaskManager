@@ -62,6 +62,41 @@ const init = async () => {
     } 
   });
 
+  server.route({
+    method: 'PUT',
+    path: '/tasks/{id}',
+    handler: async (r, h) => {
+      try {
+        const id = Number(r.params.id);
+        const { isComplete } = r.payload as { isComplete?: boolean };
+
+        if (!Number.isInteger(id)) {
+          return h.response({ error: 'Invalid task id.' }).code(400);
+        }
+
+        if (typeof isComplete !== 'boolean') {
+          return h.response({ error: 'isComplete must be a boolean.' }).code(400);
+        }
+
+        const result = await db.raw(
+          'update tasks set is_complete = ? where tasks_id = ? returning *',
+          [isComplete, id]
+        );
+
+        if (result.rows.length === 0) {
+          return h.response({ error: 'Task not found.' }).code(404);
+        }
+
+        const updatedTask = result.rows[0];
+        return h.response(updatedTask).code(200);
+        
+      } catch (error) {
+        console.error(error);
+        return h.response({ error: 'Failed to update task.' }).code(500);
+      }
+    }
+  });
+
   await server.start();
   console.log('Server running on %s', server.info.uri);
 };
