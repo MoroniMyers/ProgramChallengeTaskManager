@@ -16,13 +16,20 @@ const init = async () => {
     }
   });
 
+  const normalizeTask = (row: any) => ({
+    tasksId: row.tasks_id,
+    content: row.content,
+    isComplete: row.is_complete,
+  });
+
   server.route({
     method: 'GET',
     path: '/tasks',
     handler: async (r, h) => {
       try {
         const { rows } = await db.raw('select * from tasks');
-        return h.response(rows).code(200)
+        const tasks = rows.map(normalizeTask);
+        return h.response(tasks).code(200)
       } catch (error) {
         console.error(error);
         return h.response().code(500)        
@@ -50,7 +57,7 @@ const init = async () => {
           [taskContent.trim()]
         );
 
-        const insertedTask = result.rows[0];
+        const insertedTask = normalizeTask(result.rows[0]);
 
         return h.response(insertedTask).code(201);
       } catch (error) {
@@ -87,9 +94,9 @@ const init = async () => {
           return h.response({ error: 'Task not found.' }).code(404);
         }
 
-        const updatedTask = result.rows[0];
+        const updatedTask = normalizeTask(result.rows[0]);
         return h.response(updatedTask).code(200);
-        
+
       } catch (error) {
         console.error(error);
         return h.response({ error: 'Failed to update task.' }).code(500);
