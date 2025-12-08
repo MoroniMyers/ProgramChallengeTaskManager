@@ -16,7 +16,7 @@ export const useToggleTaskComplete = (tasks: Ref<Task[]>) => {
 
     const originalTask = tasks.value[index];
 
-    // optimistic update
+    // optimistic update for the UI
     tasks.value = [
       ...tasks.value.slice(0, index),
       { ...originalTask, isComplete: newIsComplete },
@@ -33,7 +33,7 @@ export const useToggleTaskComplete = (tasks: Ref<Task[]>) => {
 
       const updatedTask = response.data;
 
-      // ensure local state matches server
+      // update the task in local tasks list with data from server
       tasks.value = tasks.value.map(task =>
         task.tasksId === updatedTask.tasksId ? updatedTask : task
       );
@@ -43,7 +43,7 @@ export const useToggleTaskComplete = (tasks: Ref<Task[]>) => {
     } catch (err) {
       console.error(err);
 
-      // revert optimistic update
+      // revert optimistic update if API call fails
       tasks.value = [
         ...tasks.value.slice(0, index),
         originalTask,
