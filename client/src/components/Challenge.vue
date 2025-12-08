@@ -1,7 +1,7 @@
 <template>
   <div class="challenge">
     <div class="wrapper">
-      <h1>To do</h1>
+      <h1>Tasks</h1>
       <p v-if="state === 'loading'">Loading...</p>
       <p v-else-if="state === 'failed'">Error fetching data</p>
       <div 
