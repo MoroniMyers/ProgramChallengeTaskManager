@@ -16,13 +16,20 @@ const init = async () => {
     }
   });
 
+  const normalizeTask = (row: any) => ({
+    tasksId: row.tasks_id,
+    content: row.content,
+    isComplete: row.is_complete,
+  });
+
   server.route({
     method: 'GET',
     path: '/tasks',
     handler: async (r, h) => {
       try {
         const { rows } = await db.raw('select * from tasks');
-        return h.response(rows).code(200)
+        const tasks = rows.map(normalizeTask);
+        return h.response(tasks).code(200)
       } catch (error) {
         console.error(error);
         return h.response().code(500)        
@@ -32,33 +39,69 @@ const init = async () => {
 
   server.route({
     method: 'POST',
-    path: '/mission-two', // Bonus points if you give it a sensical name ;)
+    path: '/tasks', 
     handler: async (r, h) => {
-      /**
-       * Mission Two: Insert a task into the database.
-       * 
-       * Receive a post request from the front end
-       * and insert it into the database.details, too
-       * 
-       * Definition of done:
-       * [ ] the record is inserted into the database
-       * [ ] a success response is returned
-       * 
-       * Your submission will be judged out of 10 points based on
-       * the following criteria:
-       * 
-       * Works as expected - 5 points**
-       * - Is the task actually inserted into the database?
-       * - Is the inserted task returned in the response for display in the UI?
-       * - Are errors handled correctly?
-       * 
-       * Code quality - 5 points**
-       * - Is the code clean and easy to read?
-       * - Are there any obvious performance issues?
-       * - Are there any obvious bugs?
-       * - Are there comments where necessary?
-       */
+      try {
+        const { taskContent  } = r.payload as { taskContent ?: string };
+
+        // Basic validation
+        if (!taskContent || !taskContent.trim()) {
+          return h
+            .response({ error: 'Task content is required.' })
+            .code(400);
+        }
+
+        // Insert into DB and return the inserted row
+        const result = await db.raw(
+          'insert into tasks (content) values (?) returning *',
+          [taskContent.trim()]
+        );
+
+        const insertedTask = normalizeTask(result.rows[0]);
+
+        return h.response(insertedTask).code(201);
+      } catch (error) {
+        console.error(error);
+        return h
+          .response({ error: 'Failed to create task.' })
+          .code(500);
+      }
     } 
+  });
+
+  server.route({
+    method: 'PUT',
+    path: '/tasks/{id}',
+    handler: async (r, h) => {
+      try {
+        const id = Number(r.params.id);
+        const { isComplete } = r.payload as { isComplete?: boolean };
+
+        if (!Number.isInteger(id)) {
+          return h.response({ error: 'Invalid task id.' }).code(400);
+        }
+
+        if (typeof isComplete !== 'boolean') {
+          return h.response({ error: 'isComplete must be a boolean.' }).code(400);
+        }
+
+        const result = await db.raw(
+          'update tasks set is_complete = ? where tasks_id = ? returning *',
+          [isComplete, id]
+        );
+
+        if (result.rows.length === 0) {
+          return h.response({ error: 'Task not found.' }).code(404);
+        }
+
+        const updatedTask = normalizeTask(result.rows[0]);
+        return h.response(updatedTask).code(200);
+
+      } catch (error) {
+        console.error(error);
+        return h.response({ error: 'Failed to update task.' }).code(500);
+      }
+    }
   });
 
   await server.start();
